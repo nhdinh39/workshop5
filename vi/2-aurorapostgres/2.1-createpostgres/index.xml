@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tạo Aurora PostgreSQL on Report with Serverless</title>
+    <link>/vi/2-aurorapostgres/2.1-createpostgres/</link>
+    <description>Recent content in Tạo Aurora PostgreSQL on Report with Serverless</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>vi</language><atom:link href="/vi/2-aurorapostgres/2.1-createpostgres/index.xml" rel="self" type="application/rss+xml" />
+  </channel>
+</rss>

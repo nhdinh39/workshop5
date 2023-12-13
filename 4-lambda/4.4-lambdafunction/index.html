@@ -1,0 +1,2080 @@
+<!DOCTYPE html>
+<html lang="en" class="js csstransforms3d">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="Hugo 0.114.1">
+    <meta name="description" content="">
+<meta name="author" content="nhdinh39@gmail.com">
+
+    <link rel="icon" href="../../images/favicon.png" type="image/png">
+
+    <title>Create Lambda Function :: Report with Serverless</title>
+
+    
+    <link href="../../css/nucleus.css?1702434080" rel="stylesheet">
+    <link href="../../css/fontawesome-all.min.css?1702434080" rel="stylesheet">
+    <link href="../../css/hybrid.css?1702434080" rel="stylesheet">
+    <link href="../../css/featherlight.min.css?1702434080" rel="stylesheet">
+    <link href="../../css/perfect-scrollbar.min.css?1702434080" rel="stylesheet">
+    <link href="../../css/auto-complete.css?1702434080" rel="stylesheet">
+    <link href="../../css/atom-one-dark-reasonable.css?1702434080" rel="stylesheet">
+    <link href="../../css/theme.css?1702434080" rel="stylesheet">
+    <link href="../../css/hugo-theme.css?1702434080" rel="stylesheet">
+    
+    <link href="../../css/theme-workshop.css?1702434080" rel="stylesheet">
+    
+    
+
+    <script src="../../js/jquery-3.3.1.min.js?1702434080"></script>
+
+    <style>
+      :root #header + #content > #left > #rlblock_left{
+          display:none !important;
+      }
+      
+    </style>
+    
+  </head>
+  <body class="" data-url="../../4-lambda/4.4-lambdafunction/">
+    <nav id="sidebar" class="showVisitedLinks">
+
+
+
+  <div id="header-wrapper">
+    <div id="header">
+      <a id="logo" href="../../">
+
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 30" width="30%"><defs><style>.cls-1{fill:#fff;}.cls-2{fill:#f90;fill-rule:evenodd;}</style></defs><title>AWS-Logo_White-Color</title><path class="cls-1" d="M14.09,10.85a4.7,4.7,0,0,0,.19,1.48,7.73,7.73,0,0,0,.54,1.19.77.77,0,0,1,.12.38.64.64,0,0,1-.32.49l-1,.7a.83.83,0,0,1-.44.15.69.69,0,0,1-.49-.23,3.8,3.8,0,0,1-.6-.77q-.25-.42-.51-1a6.14,6.14,0,0,1-4.89,2.3,4.54,4.54,0,0,1-3.32-1.19,4.27,4.27,0,0,1-1.22-3.2A4.28,4.28,0,0,1,3.61,7.75,6.06,6.06,0,0,1,7.69,6.46a12.47,12.47,0,0,1,1.76.13q.92.13,1.91.36V5.73a3.65,3.65,0,0,0-.79-2.66A3.81,3.81,0,0,0,7.86,2.3a7.71,7.71,0,0,0-1.79.22,12.78,12.78,0,0,0-1.79.57,4.55,4.55,0,0,1-.58.22l-.26,0q-.35,0-.35-.52V2a1.09,1.09,0,0,1,.12-.58,1.2,1.2,0,0,1,.47-.35A10.88,10.88,0,0,1,5.77.32,10.19,10.19,0,0,1,8.36,0a6,6,0,0,1,4.35,1.35,5.49,5.49,0,0,1,1.38,4.09ZM7.34,13.38a5.36,5.36,0,0,0,1.72-.31A3.63,3.63,0,0,0,10.63,12,2.62,2.62,0,0,0,11.19,11a5.63,5.63,0,0,0,.16-1.44v-.7a14.35,14.35,0,0,0-1.53-.28,12.37,12.37,0,0,0-1.56-.1,3.84,3.84,0,0,0-2.47.67A2.34,2.34,0,0,0,5,11a2.35,2.35,0,0,0,.61,1.76A2.4,2.4,0,0,0,7.34,13.38Zm13.35,1.8a1,1,0,0,1-.64-.16,1.3,1.3,0,0,1-.35-.65L15.81,1.51a3,3,0,0,1-.15-.67.36.36,0,0,1,.41-.41H17.7a1,1,0,0,1,.65.16,1.4,1.4,0,0,1,.33.65l2.79,11,2.59-11A1.17,1.17,0,0,1,24.39.6a1.1,1.1,0,0,1,.67-.16H26.4a1.1,1.1,0,0,1,.67.16,1.17,1.17,0,0,1,.32.65L30,12.39,32.88,1.25A1.39,1.39,0,0,1,33.22.6a1,1,0,0,1,.65-.16h1.54a.36.36,0,0,1,.41.41,1.36,1.36,0,0,1,0,.26,3.64,3.64,0,0,1-.12.41l-4,12.86a1.3,1.3,0,0,1-.35.65,1,1,0,0,1-.64.16H29.25a1,1,0,0,1-.67-.17,1.26,1.26,0,0,1-.32-.67L25.67,3.64,23.11,14.34a1.26,1.26,0,0,1-.32.67,1,1,0,0,1-.67.17Zm21.36.44a11.28,11.28,0,0,1-2.56-.29,7.44,7.44,0,0,1-1.92-.67,1,1,0,0,1-.61-.93v-.84q0-.52.38-.52a.9.9,0,0,1,.31.06l.42.17a8.77,8.77,0,0,0,1.83.58,9.78,9.78,0,0,0,2,.2,4.48,4.48,0,0,0,2.43-.55,1.76,1.76,0,0,0,.86-1.57,1.61,1.61,0,0,0-.45-1.16A4.29,4.29,0,0,0,43,9.22l-2.41-.76A5.15,5.15,0,0,1,38,6.78a3.94,3.94,0,0,1-.83-2.41,3.7,3.7,0,0,1,.45-1.85,4.47,4.47,0,0,1,1.19-1.37A5.27,5.27,0,0,1,40.51.29,7.4,7.4,0,0,1,42.6,0a8.87,8.87,0,0,1,1.12.07q.57.07,1.08.19t.95.26a4.27,4.27,0,0,1,.7.29,1.59,1.59,0,0,1,.49.41.94.94,0,0,1,.15.55v.79q0,.52-.38.52a1.76,1.76,0,0,1-.64-.2,7.74,7.74,0,0,0-3.2-.64,4.37,4.37,0,0,0-2.21.47,1.6,1.6,0,0,0-.79,1.48,1.58,1.58,0,0,0,.49,1.18,4.94,4.94,0,0,0,1.83.92L44.55,7a5.08,5.08,0,0,1,2.57,1.6A3.76,3.76,0,0,1,47.9,11a4.21,4.21,0,0,1-.44,1.93,4.4,4.4,0,0,1-1.21,1.47,5.43,5.43,0,0,1-1.85.93A8.25,8.25,0,0,1,42.05,15.62Z"></path><path class="cls-2" d="M45.19,23.81C39.72,27.85,31.78,30,25,30A36.64,36.64,0,0,1,.22,20.57c-.51-.46-.06-1.09.56-.74A49.78,49.78,0,0,0,25.53,26.4,49.23,49.23,0,0,0,44.4,22.53C45.32,22.14,46.1,23.14,45.19,23.81Z"></path><path class="cls-2" d="M47.47,21.21c-.7-.9-4.63-.42-6.39-.21-.53.06-.62-.4-.14-.74,3.13-2.2,8.27-1.57,8.86-.83s-.16,5.89-3.09,8.35c-.45.38-.88.18-.68-.32C46.69,25.8,48.17,22.11,47.47,21.21Z"></path></svg>
+
+</a>
+
+    </div>
+    
+        <div class="searchbox">
+    <label for="search-by"><i class="fas fa-search"></i></label>
+    <input data-search-input id="search-by" type="search" placeholder="Search...">
+    <span data-search-clear=""><i class="fas fa-times"></i></span>
+</div>
+
+<script type="text/javascript" src="../../js/lunr.min.js?1702434080"></script>
+<script type="text/javascript" src="../../js/auto-complete.js?1702434080"></script>
+<script type="text/javascript">
+    
+        var baseurl = "";
+    
+</script>
+<script type="text/javascript" src="../../js/search.js?1702434080"></script>
+
+    
+  </div>
+
+    <div class="highlightable">
+    <ul class="topics">
+
+        
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-preparation/" title="Prepare Resources" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../1-preparation/">
+           <b> 1. </b> Prepare Resources
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-preparation/1.1-createvpc/" title="Create VPC" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../1-preparation/1.1-createvpc/">
+           <b> 1.1 </b> Create VPC
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-preparation/1.2-createsg/" title="Create Security Group" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../1-preparation/1.2-createsg/">
+           <b> 1.2 </b> Create Security Group
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-preparation/1.3-snsendpoint/" title="Create SNS Interface Endpoint" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../1-preparation/1.3-snsendpoint/">
+           <b> 1.3 </b> Create SNS Interface Endpoint
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-preparation/1.4-createec2/" title="Create EC2 Instance" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../1-preparation/1.4-createec2/">
+           <b> 1.4 </b> Create EC2 Instance
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-preparation/1.5-createrole/" title="Create IAM Role for EC2" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../1-preparation/1.5-createrole/">
+           <b> 1.5 </b> Create IAM Role for EC2
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/1-preparation/1.6-creates3bucket/" title="Create S3 Buckets" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../1-preparation/1.6-creates3bucket/">
+           <b> 1.6 </b> Create S3 Buckets
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-aurorapostgres/" title="Create Aurora PostgreSQL" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../2-aurorapostgres/">
+           <b> 2. </b> Create Aurora PostgreSQL
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-aurorapostgres/2.1-createpostgres/" title="Create Aurora PostgreSQL" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../2-aurorapostgres/2.1-createpostgres/">
+           <b> 2.1 </b> Create Aurora PostgreSQL
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-aurorapostgres/2.2-installclient/" title="Install PostgreSQL Client" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../2-aurorapostgres/2.2-installclient/">
+           <b> 2.2 </b> Install PostgreSQL Client
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/2-aurorapostgres/2.3-restoredata/" title="Restore Example Data" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../2-aurorapostgres/2.3-restoredata/">
+           <b> 2.3 </b> Restore Example Data
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/3-sns/" title="Create SNS Topic" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../3-sns/">
+           <b> 3. </b> Create SNS Topic
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-lambda/" title="Create Lambda Function" class="dd-item 
+        parent
+        
+        
+        ">
+      <a href="../../4-lambda/">
+           <b> 4. </b> Create Lambda Function
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-lambda/4.1-createroles/" title="Create IAM Role for Lambda" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../4-lambda/4.1-createroles/">
+           <b> 4.1 </b> Create IAM Role for Lambda
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-lambda/4.2-dependencies/" title="Install Python Dependencies" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../4-lambda/4.2-dependencies/">
+           <b> 4.2 </b> Install Python Dependencies
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-lambda/4.3-lambdalayer/" title="Create Lambda Layer" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../4-lambda/4.3-lambdalayer/">
+           <b> 4.3 </b> Create Lambda Layer
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-lambda/4.4-lambdafunction/" title="Create Lambda Function" class="dd-item 
+        
+        active
+        
+        ">
+      <a href="../../4-lambda/4.4-lambdafunction/">
+           <b> 4.4 </b> Create Lambda Function
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/4-lambda/4.5-lambdaconfig/" title="Lambda Configuration" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../4-lambda/4.5-lambdaconfig/">
+           <b> 4.5 </b> Lambda Configuration
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-apigateway/" title="Create API Gateway" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../5-apigateway/">
+           <b> 5. </b> Create API Gateway
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-apigateway/5.1-apigateway/" title="Create API Gateway" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../5-apigateway/5.1-apigateway/">
+           <b> 5.1 </b> Create API Gateway
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-apigateway/5.2-resouremethod/" title="Create Resource, Method" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../5-apigateway/5.2-resouremethod/">
+           <b> 5.2 </b> Create Resource, Method
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/5-apigateway/5.3-deployapi/" title="Deploy API" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../5-apigateway/5.3-deployapi/">
+           <b> 5.3 </b> Deploy API
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/6-eventbridge/" title="Create EventBridge Scheduler" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../6-eventbridge/">
+           <b> 6. </b> Create EventBridge Scheduler
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/7-staticwebsite/" title="Create Static Website" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../7-staticwebsite/">
+           <b> 7. </b> Create Static Website
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/7-staticwebsite/7.1-upload/" title="Upload Website Into S3" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../7-staticwebsite/7.1-upload/">
+           <b> 7.1 </b> Upload Website Into S3
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/7-staticwebsite/7.2-public/" title="Public Static Website" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../7-staticwebsite/7.2-public/">
+           <b> 7.2 </b> Public Static Website
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/7-staticwebsite/7.3-check/" title="Check Website" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../7-staticwebsite/7.3-check/">
+           <b> 7.3 </b> Check Website
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/8-check/" title="Test Operation" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../8-check/">
+           <b> 8. </b> Test Operation
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+      
+        <ul>
+          
+          
+            
+          
+          
+          
+        
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/8-check/8.1-website/" title="From Static Website" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../8-check/8.1-website/">
+           <b> 8.1 </b> From Static Website
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+            
+            
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/8-check/8.2-eventbridge/" title="From EventBridge" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../8-check/8.2-eventbridge/">
+           <b> 8.2 </b> From EventBridge
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+            
+          
+        
+        </ul>
+              
+    </li>
+  
+ 
+
+          
+          
+
+
+
+
+ 
+  
+    
+    <li data-nav-id="/9-cleanup/" title="Clean Up Resources" class="dd-item 
+        
+        
+        
+        ">
+      <a href="../../9-cleanup/">
+           <b> 9. </b> Clean Up Resources
+          
+            <i class="fas fa-check read-icon"></i>
+          
+      </a>
+      
+              
+    </li>
+  
+ 
+
+          
+         
+    </ul>
+
+    
+    
+      <section id="shortcuts">
+        <h3>More</h3>
+        <ul>
+          
+              <li> 
+                  <a class="padding" href="https://www.facebook.com/groups/awsstudygroupfcj/"><i class='fab fa-facebook'></i> AWS Study Group</a>
+              </li>
+          
+        </ul>
+      </section>
+    
+
+    
+    <section id="prefooter">
+      <hr/>
+      <ul>
+      
+        <li>
+          <a class="padding">
+            <i class="fas fa-language fa-fw"></i>
+          <div class="select-style">
+            <select id="select-language" onchange="location = this.value;">
+          
+          
+          
+              
+              
+                  
+                    
+                    
+                      <option id="en" value="/4-lambda/4.4-lambdafunction/" selected>English</option>
+                    
+                  
+              
+                  
+              
+          
+              
+              
+                  
+              
+                  
+                    
+                    
+                      <option id="vi" value="/vi/4-lambda/4.4-lambdafunction/">Tiếng Việt</option>
+                    
+                  
+              
+          
+        </select>
+        <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+          width="255px" height="255px" viewBox="0 0 255 255" style="enable-background:new 0 0 255 255;" xml:space="preserve">
+          <g>
+            <g id="arrow-drop-down">
+              <polygon points="0,63.75 127.5,191.25 255,63.75 		" />
+            </g>
+          </g>
+        </svg>
+        </div>
+        </a>
+        </li>
+      
+      
+      
+        <li><a class="padding" href="#" data-clear-history-toggle=""><i class="fas fa-history fa-fw"></i> Clear History</a></li>
+      
+      </ul>
+    </section>
+    
+    <section id="footer">
+      <left>
+    
+     <b> Workshop</b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7920860&style=0038&nbdigits=9&type=page&initCount=0" title="Migrate" Alt="web counter"   border="0" /></a>  <br>
+     <b> <a href="https://cloudjourney.awsstudygroup.com/">Cloud Journey</a></b> <br>
+    <img src="https://hitwebcounter.com/counter/counter.php?page=7830807&style=0038&nbdigits=9&type=page&initCount=0" title="Total CLoud Journey" Alt="web counter"   border="0"   />
+     
+</left>
+<left>
+    <br>
+    <br>
+        <b> Last Updated </b> <br>
+        <i><font color=orange>12-12-2023</font></i>
+    </left>
+    <left>
+        <br>
+        <br>
+            <b> Team </b> <br>
+           
+            <i> <a href="https://www.linkedin.com/in/nhdinh/"  style="color:orange">Huy Đình </a> <br>
+                <a href="https://www.linkedin.com/in/jotaguy"  style="color:orange">Gia Hưng </a>
+
+               
+        </i>
+        </left>
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+
+    </section>
+  </div>
+</nav>
+
+
+
+
+        <section id="body">
+        <div id="overlay"></div>
+        <div class="padding highlightable">
+              
+              <div>
+                <div id="top-bar">
+                
+                
+                <div id="breadcrumbs" itemscope="" itemtype="http://data-vocabulary.org/Breadcrumb">
+                    <span id="sidebar-toggle-span">
+                        <a href="#" id="sidebar-toggle" data-sidebar-toggle="">
+                          <i class="fas fa-bars"></i>
+                        </a>
+                    </span>
+                  
+                  <span id="toc-menu"><i class="fas fa-list-alt"></i></span>
+                  
+                  <span class="links">
+                 
+                 
+                    
+          
+          
+            
+            
+          
+          
+            
+            
+          
+          
+            <a href='../../'>Generate Monthly Sales Report with Serverless Architecture</a> > <a href='../../4-lambda/'>Create Lambda Function</a> > Create Lambda Function
+          
+        
+          
+        
+          
+        
+                 
+                  </span>
+                </div>
+                
+                    <div class="progress">
+    <div class="wrapper">
+<nav id="TableOfContents">
+  <ul>
+    <li>
+      <ul>
+        <li></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+
+                
+              </div>
+            </div>
+            
+        <div id="head-tags">
+        
+        </div>
+        
+        <div id="body-inner">
+          
+            <h1>
+              
+              Create Lambda Function
+            </h1>
+          
+
+        
+
+
+
+	<h4 id="execution-sequence">Execution sequence</h4>
+<ol>
+<li>Truy cập <a href="https://console.aws.amazon.com/lambda/home">Giao diện quản trị dịch vụ Lambda</a></li>
+</ol>
+<ul>
+<li>Chọn <strong>Functions</strong></li>
+<li>Chọn <strong>Create function</strong></li>
+</ul>
+<p><img src="../../images/4-lambdafunction/4.4/4.4.1.png" alt="LAMBDA"></p>
+<ol start="2">
+<li>Tại trang <strong>Create function</strong></li>
+</ol>
+<ul>
+<li>Tại mục <strong>Function name</strong>, nhập <strong>monthly-sales-report-lambda</strong></li>
+<li>Tại mục <strong>Runtime</strong>, chọn <strong>Python 3.11</strong></li>
+<li>Tại mục <strong>Execute role</strong>, chọn <strong>Use an existing role</strong>, sau đó chọn <strong>Lambda-Report-Role</strong></li>
+<li>Chọn <strong>Create function</strong></li>
+</ul>
+<p><img src="../../images/4-lambdafunction/4.4/4.4.2.png" alt="LAMBDA"></p>
+<ol start="3">
+<li>Hoàn thành tạo Lambda Function</li>
+</ol>
+<ul>
+<li>Chọn <strong>Layer</strong>, sau đó chọn <strong>Add Layer</strong></li>
+</ul>
+<p><img src="../../images/4-lambdafunction/4.4/4.4.3.png" alt="LAMBDA">
+<img src="../../images/4-lambdafunction/4.4/4.4.4.png" alt="LAMBDA"></p>
+<ol start="4">
+<li>Tại trang <strong>Add Layer</strong></li>
+</ol>
+<ul>
+<li>Chọn <strong>Custom layers</strong>, chọn <strong>report-layer</strong> và version <strong>1</strong></li>
+<li>Chọn <strong>Add</strong>
+<img src="../../images/4-lambdafunction/4.4/4.4.5.png" alt="LAMBDA"></li>
+</ul>
+<ol start="5">
+<li>
+<p>Hoàn thành Add <strong>report-layer</strong> vào Lambda Function
+<img src="../../images/4-lambdafunction/4.4/4.4.6.png" alt="LAMBDA"></p>
+</li>
+<li>
+<p>Copy và dán đoạn Code sau vào mục <strong>Code</strong> của Lambda Function</p>
+</li>
+</ol>
+<pre tabindex="0"><code>import os
+import boto3
+import json
+import pytz
+import psycopg2
+import datetime
+from openpyxl import Workbook
+from openpyxl.chart import BarChart, Reference, shapes
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import Font, Alignment, Border, Side, PatternFill
+
+postgres_dbname = os.environ[&#39;postgres_dbname&#39;]
+postgres_user = os.environ[&#39;postgres_user&#39;]
+postgres_password = os.environ[&#39;postgres_password&#39;]
+postgres_host = os.environ[&#39;postgres_host&#39;]
+s3_bucket_result = os.environ[&#39;s3_bucket_result&#39;]
+s3_bucket_web = os.environ[&#39;s3_bucket_web&#39;]
+sns_topic_arn = os.environ[&#39;sns_topic_arn&#39;]
+
+def get_data(month, year):
+    # Connect to Aurora PostgreSQL
+    conn = psycopg2.connect(f&#34;dbname={postgres_dbname} user={postgres_user} password={postgres_password} host={postgres_host}&#34;)
+    cur = conn.cursor()
+
+    # Query Profit for Total Profit Chart
+    cur.execute(f&#34;SELECT to_char(date_trunc(&#39;day&#39;, date), &#39;fmDD&#39;) AS date, SUM(profit) \
+                FROM sales \
+                WHERE EXTRACT(MONTH FROM date) = {month} AND EXTRACT(YEAR FROM date) = {year} \
+                GROUP BY date_trunc(&#39;day&#39;, date) \
+                ORDER BY date_trunc(&#39;day&#39;, date);&#34;)
+    data_profit = cur.fetchall()
+
+    # Query Profit for Top 10 Product Table
+    cur.execute(f&#34;SELECT ROW_NUMBER() OVER (ORDER BY SUM(profit) DESC) AS id, product, SUM(profit) \
+                FROM sales \
+                WHERE EXTRACT(MONTH FROM date) = {month} AND EXTRACT(YEAR FROM date) = {year} \
+                GROUP BY product \
+                ORDER BY SUM(profit) DESC \
+                LIMIT 10;&#34;)
+    data_product = cur.fetchall()
+
+    # Query Profit for Top 10 Staff Table
+    cur.execute(f&#34;SELECT ROW_NUMBER() OVER (ORDER BY SUM(sales.profit) DESC) AS id, staffs.name, SUM(sales.profit) \
+                FROM sales \
+                JOIN staffs ON staffs.id = sales.staff_id \
+                WHERE EXTRACT(MONTH FROM date) = {month} AND EXTRACT(YEAR FROM date) = {year} \
+                GROUP BY staffs.name \
+                ORDER BY SUM(sales.profit) DESC \
+                LIMIT 10;&#34;)
+    data_staff = cur.fetchall()
+
+    # Disconnect from Aurora PostgreSQL
+    cur.close()
+    conn.close()
+
+    return data_profit, data_product, data_staff
+
+
+def create_report(month, year):
+
+    # Get data from Aurora PostgreSQL
+    data_profit, data_product, data_staff = get_data(month, year)
+
+    # Create new Excel Workbook
+    wb = Workbook()
+    ws = wb.active  # Sheet 1
+    ws2 = wb.create_sheet(title=&#34;Reference&#34;)  # Sheet 2
+
+    # Create Title Report
+    report_name = f&#34;{datetime.datetime.strptime(str(month), &#39;%m&#39;).strftime(&#39;%b&#39;)}-{year}-Monthly-Sales-Report&#34;
+    ws.title = &#34;Report&#34;
+    ws[&#34;A1&#34;] = f&#34;Monthly Sales Report&#34;
+    ws[&#34;A1&#34;].alignment = Alignment(horizontal=&#34;center&#34;, vertical=&#34;center&#34;)
+    ws[&#34;A1&#34;].font = Font(size=30, bold=True)
+    ws.merge_cells(&#34;A1:J1&#34;)
+    ws[&#34;A1&#34;].fill = PatternFill(start_color=&#34;4cd137&#34;, end_color=&#34;4cd137&#34;, fill_type=&#34;solid&#34;)
+    ws[&#34;A2&#34;] = f&#34;{datetime.datetime.strptime(str(month), &#39;%m&#39;).strftime(&#39;%b&#39;)}-{year}&#34;
+    ws[&#34;A2&#34;].font = Font(size=20, bold=True)
+
+    time_create = datetime.datetime.now(pytz.timezone(&#39;Asia/Ho_Chi_Minh&#39;)).strftime(&#39;%Y-%m-%d %H:%M:%S&#39;)
+    ws[&#34;I2&#34;] = f&#34;Issue: {time_create}&#34;
+    ws[&#34;I2&#34;].font = Font(italic=True)
+
+    # Add Total Profit Data to Sheet2
+    for row_data in data_profit:
+        ws2.append(row_data)
+
+    # Create Total Profit Chart
+    chart = BarChart()
+    chart.title = &#34;Total Profit Chart by Day&#34;
+    chart.width = 16
+    chart.height = 10
+    chart.x_axis.title = &#34;Day&#34;
+    chart.y_axis.title = &#34;Profit ($)&#34;
+    data_range = Reference(ws2, min_col=2, max_col=2, min_row=1, max_row=len(data_profit))
+    labels = Reference(ws2, min_col=1, min_row=1, max_row=len(data_profit))
+    chart.add_data(data_range)
+    chart.set_categories(labels)
+    chart.graphical_properties = shapes.GraphicalProperties()
+    chart.graphical_properties.line.noFill = True
+    chart.style = 8
+    chart.legend = None
+
+    # Add Total Profit Chart to Sheet1
+    ws.add_chart(chart, &#34;A6&#34;)
+
+    # Create Title Top 10 Product Table
+    ws[&#34;B29&#34;] = &#34;Top 10 Products&#34;
+    ws[&#34;B29&#34;].font = Font(size=18, bold=True)
+    ws[&#34;B29&#34;].alignment = Alignment(horizontal=&#34;center&#34;, vertical=&#34;center&#34;)
+    ws.merge_cells(&#34;B29:D29&#34;)
+
+    # Create Title Top 10 Staff Table
+    ws[&#34;G29&#34;] = &#34;Top 10 Staffs&#34;
+    ws[&#34;G29&#34;].font = Font(size=18, bold=True)
+    ws.merge_cells(&#34;G29:I29&#34;)
+    ws[&#34;G29&#34;].alignment = Alignment(horizontal=&#34;center&#34;, vertical=&#34;center&#34;)
+
+    # Format Header Table
+    cell_format = {
+        &#34;B31&#34;: [&#34;id&#34;, &#34;B&#34;, &#34;B31&#34;, 2],
+        &#34;C31&#34;: [&#34;Product&#34;, &#34;C&#34;, &#34;C31&#34;, 1.1],
+        &#34;D31&#34;: [&#34;Total_Profit&#34;, &#34;D&#34;, &#34;D31&#34;, 1.1],
+        &#34;G31&#34;: [&#34;id&#34;, &#34;G&#34;, &#34;G31&#34;, 2],
+        &#34;H31&#34;: [&#34;Staff&#34;, &#34;H&#34;, &#34;H31&#34;, 1.5],
+        &#34;I31&#34;: [&#34;Total_Profit&#34;, &#34;I&#34;, &#34;I31&#34;, 1.1]
+    }
+
+    thin_border = Border(left=Side(style=&#34;thin&#34;),
+                         right=Side(style=&#34;thin&#34;),
+                         top=Side(style=&#34;thin&#34;),
+                         bottom=Side(style=&#34;thin&#34;))
+
+    for cell, cell_value in cell_format.items():
+        ws[f&#34;{cell}&#34;] = f&#34;{cell_value[0]}&#34;
+        ws[f&#34;{cell}&#34;].font = Font(size=12, bold=True)
+        ws[f&#34;{cell}&#34;].fill = PatternFill(start_color=&#34;0abde3&#34;, end_color=&#34;0abde3&#34;, fill_type=&#34;solid&#34;)
+        ws[f&#34;{cell}&#34;].border = thin_border
+        ws[f&#34;{cell}&#34;].alignment = Alignment(horizontal=&#34;center&#34;, vertical=&#34;center&#34;)
+        ws.column_dimensions[f&#34;{cell_value[1]}&#34;].width = len(str(ws[f&#34;{cell_value[2]}&#34;].value)) * cell_value[3]
+
+    # Insert Value Top 10 Product Table
+    for row_idx, row in enumerate(data_product, 32):
+        for col_idx, value in enumerate(row, 2):
+            col_letter = get_column_letter(col_idx)
+            ws[f&#34;{col_letter}{row_idx}&#34;] = str(value)
+            ws[f&#34;{col_letter}{row_idx}&#34;].border = thin_border
+            ws[f&#34;{col_letter}{row_idx}&#34;].alignment = Alignment(horizontal=&#34;center&#34;, vertical=&#34;center&#34;)
+
+    # Insert Value Top 10 Staff Table
+    for row_idx, row in enumerate(data_staff, 32):
+        for col_idx, value in enumerate(row, 7):
+            col_letter = get_column_letter(col_idx)
+            ws[f&#34;{col_letter}{row_idx}&#34;] = str(value)
+            ws[f&#34;{col_letter}{row_idx}&#34;].border = thin_border
+            ws[f&#34;{col_letter}{row_idx}&#34;].alignment = Alignment(horizontal=&#34;center&#34;, vertical=&#34;center&#34;)
+
+    # Save Excel
+    ws.page_setup.orientation = ws.ORIENTATION_PORTRAIT
+    ws.print_options.horizontalCentered = True
+    wb.save(f&#34;/tmp/{report_name}.xlsx&#34;)
+
+    # Upload pdf file to S3
+    url = upload_report_to_S3(f&#34;/tmp/{report_name}.xlsx&#34;, f&#34;{s3_bucket_result}&#34;)
+
+    # Send Presigned URL to send User to Download Report
+    sns_send_report_url(report_name, url)
+
+    return report_name, url
+
+
+def upload_report_to_S3(file_name, s3_bucket_result, object_name=None):
+    # If S3 object_name was not specified, use file_name
+    if object_name is None:
+        object_name = os.path.basename(file_name)
+
+    # Upload the file to S3 Bucket
+    s3_client = boto3.client(&#34;s3&#34;)
+    s3_client.upload_file(file_name, s3_bucket_result, object_name)
+
+    # Create Presigned URL to send into User to Download Report
+    url = s3_client.generate_presigned_url(&#34;get_object&#34;, Params={&#34;Bucket&#34;: s3_bucket_result, &#34;Key&#34;: object_name},
+                                           ExpiresIn=604800)
+
+    return url
+
+def sns_send_report_url(report_name, url):
+    sns_client = boto3.client(&#34;sns&#34;)
+    message = f&#34;{report_name} has been successfully created!\n\nThis is URL to Download Report : {url}&#34;
+
+    # Send message to SNS topic
+    response = sns_client.publish(
+        TopicArn=sns_topic_arn,
+        Subject=report_name,
+        Message=message,
+        MessageStructure=&#34;string&#34;
+    )
+
+def lambda_handler(event, context):
+
+    headers = event[&#39;headers&#39;]
+    origin = f&#39;https://{s3_bucket_web}.s3.ap-southeast-1.amazonaws.com&#39;
+    response_headers = {
+        &#39;Content-Type&#39;: &#39;application/json&#39;,
+        &#39;Access-Control-Allow-Origin&#39;: origin
+    }
+    if headers.get(&#39;origin&#39;) != None and headers.get(&#39;origin&#39;) == origin or headers.get(&#39;origin&#39;) == &#39;event-bridge&#39;:
+
+        if headers.get(&#39;origin&#39;) == origin:
+            month = json.loads(event[&#39;body&#39;])[&#39;month&#39;]
+            year = json.loads(event[&#39;body&#39;])[&#39;year&#39;]
+
+        if headers.get(&#39;origin&#39;) == &#39;event-bridge&#39;:
+            month = (datetime.date.today().replace(day=1) - datetime.timedelta(days=1)).month
+            year = (datetime.date.today().replace(day=1) - datetime.timedelta(days=1)).year
+
+        report_name, url = create_report(month, year)
+
+        response = {
+            &#39;statusCode&#39;: 200,
+            &#39;headers&#39;: response_headers,
+            &#39;body&#39;:
+                json.dumps({
+                    &#39;status&#39;: &#39;Success&#39;,
+                    &#39;report_name&#39;: report_name,
+                    &#39;url&#39;: url
+                }),
+        }
+        return response
+
+    return {
+        &#39;statusCode&#39;: 403,
+        &#39;headers&#39;: response_headers,
+        &#39;body&#39;: json.dumps({&#39;status&#39;: &#39;Forbidden!&#39;}),
+    }
+</code></pre><ul>
+<li>Chọn <strong>Deploy</strong>, hoàn thành cập nhật Code cho <strong>Lambda Function</strong>
+<img src="../../images/4-lambdafunction/4.4/4.4.7.png" alt="LAMBDA"></li>
+</ul>
+
+<div class="notices info" ><p><strong>Chức năng của các Function trong Lambda Function:</strong><br>
+<strong>get_data</strong>: Kết nối với Aurora PostgreSQL để lấy dữ liệu<br>
+<strong>create_report</strong>: Nhận dữ liệu từ hàm <strong>get_data</strong>, tạo Excel Report<br>
+<strong>upload_report_to_S3</strong>: Upload Report đến S3 và tạo Presigned URL<br>
+<strong>sns_send_report_url</strong>: Gửi mail thông báo và <strong>Presigned URL</strong> đến User để <strong>Download Report</strong><br>
+<strong>lambda_handler</strong>: Xử lý sự kiện đầu vào từ <strong>Static Website</strong> hoặc <strong>EventBridge</strong>, có logic cho phù hợp để tính toán 2 <strong>month</strong> and <strong>year</strong> làm input cho hàm <strong>create_report</strong></p>
+</div>
+
+
+
+
+
+
+<footer class=" footline" >
+	
+</footer>
+
+        
+        </div> 
+        
+
+      </div>
+
+    <div id="navigation">
+        
+        
+        
+        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                        
+                        
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                        
+                    
+                    
+
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+                    
+                        
+            
+            
+                
+                    
+                
+                
+
+                    
+                    
+                    
+
+                    
+            
+        
+                    
+            
+        
+        
+        
+
+
+	 
+	 
+		
+			<a class="nav nav-prev" href="../../4-lambda/4.3-lambdalayer/" title="Create Lambda Layer"> <i class="fa fa-chevron-left"></i></a>
+		
+		
+			<a class="nav nav-next" href="../../4-lambda/4.5-lambdaconfig/" title="Lambda Configuration" style="margin-right: 0px;"><i class="fa fa-chevron-right"></i></a>
+		
+	
+    </div>
+
+    </section>
+    
+    <div style="left: -1000px; overflow: scroll; position: absolute; top: -1000px; border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;">
+      <div style="border: none; box-sizing: content-box; height: 200px; margin: 0px; padding: 0px; width: 200px;"></div>
+    </div>
+    <script src="../../js/clipboard.min.js?1702434080"></script>
+    <script src="../../js/perfect-scrollbar.min.js?1702434080"></script>
+    <script src="../../js/perfect-scrollbar.jquery.min.js?1702434080"></script>
+    <script src="../../js/jquery.sticky.js?1702434080"></script>
+    <script src="../../js/featherlight.min.js?1702434080"></script>
+    <script src="../../js/highlight.pack.js?1702434080"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+    <script src="../../js/modernizr.custom-3.6.0.js?1702434080"></script>
+    <script src="../../js/learn.js?1702434080"></script>
+    <script src="../../js/hugo-learn.js?1702434080"></script>
+
+    <link href="../../mermaid/mermaid.css?1702434080" rel="stylesheet" />
+    <script src="../../mermaid/mermaid.js?1702434080"></script>
+    <script>
+        mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-158079754-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+  </body>
+</html>
